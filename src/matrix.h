@@ -34,6 +34,15 @@ public:
 		return str;
 	}
 
+	matrix<J, I> transpose() const
+	{
+		matrix<J, I> transp;
+		for (int i = 0; i < I; i++)
+			for (int j = 0; j < J; j++)
+				transp[j][i] = a[i][j];
+		return transp;
+	}
+
 	template <int K>
 	matrix<I, K> operator*(const matrix<J, K>& rhs) const
 	{
@@ -45,6 +54,24 @@ public:
 		return prod;
 	}
 
+	matrix operator*(float rhs) const
+	{
+		matrix prod;
+		for (int i = 0; i < I; i++)
+			for (int j = 0; j < J; j++)
+				prod[i][j] = a[i][j] * rhs;
+		return prod;
+	}
+
+	matrix hadamard(const matrix& rhs) const
+	{
+		matrix had;
+		for (int i = 0; i < I; i++)
+			for (int j = 0; j < J; j++)
+				had[i][j] = a[i][j] * rhs[i][j];
+		return had;
+	}
+
 	matrix operator+(const matrix& rhs) const
 	{
 		matrix sum;
@@ -53,6 +80,29 @@ public:
 				sum[i][j] = a[i][j] + rhs[i][j];
 		return sum;
 	}
+
+	matrix operator-(const matrix& rhs) const
+	{
+		matrix sub;
+		for (int i = 0; i < I; i++)
+			for (int j = 0; j < J; j++)
+				sub[i][j] = a[i][j] - rhs[i][j];
+		return sub;
+	}
 };
+
+template <int I, int J>
+matrix<I, J> operator*(float lhs, const matrix<I, J>& rhs)
+{
+	matrix<I, J> prod;
+	for (int i = 0; i < I; i++)
+	{
+		for (int j = 0; j < J; j++)
+		{
+			prod[i][j] = lhs * rhs[i][j];
+		}
+	}
+	return prod;
+}
 
 #endif
